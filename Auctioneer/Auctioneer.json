@@ -1,0 +1,11 @@
+﻿{
+
+  "Author": "NostraThomas",
+"Name": "Auctioneer",
+"InternalName": "Auctioneer",
+"Description": "Going once, going twice... SOLD",
+"ApplicableVersion": "any",
+"DalamudApiLevel": 11,
+"TestingDalamudApiLevel": 11,
+"Punchline": "Speak of devil and he shall appear"
+}
