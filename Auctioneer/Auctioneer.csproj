@@ -1,9 +1,10 @@
-﻿<Project Sdk="Dalamud.NET.SDK/11.2.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
         <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
@@ -49,6 +50,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DalamudPackager" Version="11.0.0" />
     </ItemGroup>
 
 </Project>
