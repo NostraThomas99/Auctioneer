@@ -47,4 +47,8 @@
       <Content Include="Auctioneer.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
+    </ItemGroup>
+
 </Project>
