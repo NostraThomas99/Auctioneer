@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auctioneer", "Auctioneer\Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommons", "ECommons\ECommons\ECommons.csproj", "{68BE9E95-6E09-4486-847A-B2F523C4337E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoRetainerAPI", "AutoRetainerAPI\AutoRetainerAPI\AutoRetainerAPI.csproj", "{0ABD113F-7122-4057-9060-DB6E5445FF14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{68BE9E95-6E09-4486-847A-B2F523C4337E}.Debug|Any CPU.Build.0 = Debug|x64
 		{68BE9E95-6E09-4486-847A-B2F523C4337E}.Release|Any CPU.ActiveCfg = Release|x64
 		{68BE9E95-6E09-4486-847A-B2F523C4337E}.Release|Any CPU.Build.0 = Release|x64
+		{0ABD113F-7122-4057-9060-DB6E5445FF14}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{0ABD113F-7122-4057-9060-DB6E5445FF14}.Debug|Any CPU.Build.0 = Debug|x64
+		{0ABD113F-7122-4057-9060-DB6E5445FF14}.Release|Any CPU.ActiveCfg = Release|x64
+		{0ABD113F-7122-4057-9060-DB6E5445FF14}.Release|Any CPU.Build.0 = Release|x64
 	EndGlobalSection
 EndGlobal
