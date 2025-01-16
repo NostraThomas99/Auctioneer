@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Auctioneer.Helpers;
 using ECommons;
@@ -20,12 +21,28 @@ public class AdjustItemPriceTask
     public uint ItemId;
     public int CurrentPrice;
     public int LowestPrice;
+    public bool IsCurrentItemHq;
 
     private static Regex PriceAdjustRegex() => new Regex("[^0-9]");
 
-    public unsafe bool Enter()
+
+    public unsafe bool ClickComparePrice()
     {
-        Auctioneer.Status = "Getting current market price";
+        AtkUnitBase* AddonPtr;
+        if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerSell", out AddonPtr) ||
+            !GenericHelpers.IsAddonReady(AddonPtr) || !EzThrottler.Check("Throttle"))
+            return false;
+        EzThrottler.Throttle("Throttle", 1500);
+        Svc.Log.Debug("Clicking compare price");
+        CurrentPrice = AddonPtr->AtkValues[5].Int;
+        IsCurrentItemHq = Marshal.PtrToStringUTF8((IntPtr)AddonPtr->AtkValues[1].String).Contains('\uE03C');
+        Callback.Fire(AddonPtr, true, 4);
+        return true;
+    }
+
+    public unsafe bool GetCurrentMarketPrice()
+    {
+        Svc.Log.Debug("Getting current market price");
         AtkUnitBase* AddonPtr1;
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("ItemSearchResult", out AddonPtr1) ||
             !GenericHelpers.IsAddonReady(AddonPtr1) || !EzThrottler.Throttle("Throttle", 1000))
@@ -33,12 +50,12 @@ public class AdjustItemPriceTask
         string text1 = AddonPtr1->GetTextNodeById(29U)->NodeText.ExtractText();
         if (AddonPtr1->GetTextNodeById(5U)->NodeText.ExtractText() == "Please wait and try your search again.")
             AddonPtr1->Close(true);
-        Auctioneer.Status = "Waiting for listings";
+        Svc.Log.Debug("Waiting for listings");
         if (string.IsNullOrEmpty(text1))
             return false;
         if (int.Parse(PriceAdjustRegex().Replace(text1, "")) == 0)
         {
-            Auctioneer.Status = "No listings";
+            Svc.Log.Debug("No listings");
             if (false) //opened from checked listing
             {
                 LowestPrice = 0;
@@ -46,11 +63,13 @@ public class AdjustItemPriceTask
                 return true;
             }
 
-            Callback.Fire(AddonPtr1, true, 0);
             AtkUnitBase* AddonPtr2;
             if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("ItemHistory", out AddonPtr2) ||
                 !GenericHelpers.IsAddonReady(AddonPtr2))
+            {
+                Callback.Fire(AddonPtr1, true, 0);
                 return false;
+            }
             string text2 =
                 AddonPtr2->UldManager.NodeList[3]->GetAsAtkComponentNode()->Component->UldManager.NodeList[2]->
                         GetAsAtkComponentNode()->Component->UldManager.NodeList[6]->GetAsAtkTextNode()->NodeText
@@ -58,7 +77,8 @@ public class AdjustItemPriceTask
             if (!int.TryParse(PriceAdjustRegex().Replace(text2, ""), out LowestPrice))
                 return false;
             EzThrottler.Throttle("Throttle", 1000);
-            Svc.Log.Fatal(text2);
+            AddonPtr2->Close(true);
+            AddonPtr1->Close(true);
             return true;
         }
 
@@ -67,7 +87,7 @@ public class AdjustItemPriceTask
         interpolatedStringHandler.AppendLiteral("Number of Items: ");
         interpolatedStringHandler.AppendFormatted<int>(num);
         string stringAndClear1 = interpolatedStringHandler.ToStringAndClear();
-        Auctioneer.Status = stringAndClear1;
+        Svc.Log.Debug(stringAndClear1);
         string text3 =
             AddonPtr1->UldManager.NodeList[5]->GetAsAtkComponentNode()->Component->UldManager.NodeList[1]->
                     GetAsAtkComponentNode()->Component->UldManager.NodeList[10]->GetAsAtkTextNode()->NodeText
@@ -88,13 +108,13 @@ public class AdjustItemPriceTask
         interpolatedStringHandler.AppendLiteral("LOWEST PRICE IS ");
         interpolatedStringHandler.AppendFormatted<int>(LowestPrice);
         string stringAndClear2 = interpolatedStringHandler.ToStringAndClear();
-        Auctioneer.Status = stringAndClear2;
+        Svc.Log.Debug(stringAndClear2);
         return true;
     }
 
-    public unsafe bool Execute()
+    public unsafe bool AdjustPrice()
     {
-        Auctioneer.Status = "Adjusting price";
+        Svc.Log.Debug("Adjusting price");
         AtkUnitBase* AddonPtr;
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerSell", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))

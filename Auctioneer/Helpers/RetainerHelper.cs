@@ -66,7 +66,7 @@ internal static class RetainerHelper
             return false;
         Callback.Fire(AddonPtr, true, 2, retainerIndex, 0, 0);
         GameRetainerManager.Retainer retainer = GameRetainerManager.Retainers[retainerIndex];
-        Auctioneer.Status = "Clicking on " + retainer.Name.ToUpper();
+        Svc.Log.Debug("Clicking on " + retainer.Name);
         return true;
     }
 
@@ -85,7 +85,7 @@ internal static class RetainerHelper
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("SelectString", out AddonPtr2) ||
             !GenericHelpers.IsAddonReady(AddonPtr2))
             return false;
-        Auctioneer.Status = "Opening retainer sell list";
+        Svc.Log.Debug("Opening retainer sell list");
         Callback.Fire(AddonPtr2, true, 2);
         return true;
     }
@@ -96,7 +96,7 @@ internal static class RetainerHelper
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerList", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
             return false;
-        Auctioneer.Status = "Closing retainer list";
+        Svc.Log.Debug("Closing retainer list");
         AddonPtr->Close(true);
         return true;
     }
@@ -126,7 +126,7 @@ internal static class RetainerHelper
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("ItemSearchResult", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
             return false;
-        Auctioneer.Status = "Closing item search result";
+        Svc.Log.Debug("Closing item search result");
         AddonPtr->Close(true);
         return true;
     }
@@ -137,7 +137,7 @@ internal static class RetainerHelper
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerSell", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
             return false;
-        Auctioneer.Status = "Closing adjust price";
+        Svc.Log.Debug("Closing adjust price");
         AddonPtr->Close(true);
         return true;
     }
@@ -148,7 +148,7 @@ internal static class RetainerHelper
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerSellList", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
             return false;
-        Auctioneer.Status = "Closing retainer sell list";
+        Svc.Log.Debug("Closing retainer sell list");
         AddonPtr->Close(true);
         return true;
     }
@@ -159,7 +159,7 @@ internal static class RetainerHelper
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("SelectString", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
             return false;
-        Auctioneer.Status = "Closing select string window";
+        Svc.Log.Debug("Closing select string window");
         AddonPtr->Close(true);
         return true;
     }
@@ -170,7 +170,7 @@ internal static class RetainerHelper
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("ContextMenu", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
             return false;
-        Auctioneer.Status = "Closing context menu";
+        Svc.Log.Debug("Closing context menu");
         AddonPtr->Close(true);
         return true;
     }
@@ -181,7 +181,7 @@ internal static class RetainerHelper
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("Talk", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
             return false;
-        Auctioneer.Status = "Skipping dialog";
+        Svc.Log.Debug("Skipping dialog");
         Callback.Fire(AddonPtr, true);
         return true;
     }
@@ -192,7 +192,7 @@ internal static class RetainerHelper
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerSellList", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
             return false;
-        Auctioneer.Status = "Clicking on item " + (index + 1);
+        Svc.Log.Debug("Clicking on item " + (index + 1));
         Callback.Fire(AddonPtr, true, 0, index, 1);
         return true;
     }
@@ -203,24 +203,8 @@ internal static class RetainerHelper
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("ContextMenu", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
             return false;
-        Auctioneer.Status = "Clicking adjust price";
+        Svc.Log.Debug("Clicking adjust price");
         Callback.Fire(AddonPtr, true, 0, 0, 0, 0, 0);
-        return true;
-    }
-
-    internal static unsafe bool ClickComparePrice(
-        ref int CurrentItemPrice,
-        ref bool IsCurrentItemHq)
-    {
-        AtkUnitBase* AddonPtr;
-        if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerSell", out AddonPtr) ||
-            !GenericHelpers.IsAddonReady(AddonPtr) || !EzThrottler.Check("Throttle"))
-            return false;
-        EzThrottler.Throttle("Throttle", 1500);
-        Auctioneer.Status = "Clicking compare price";
-        CurrentItemPrice = AddonPtr->AtkValues[5].Int;
-        IsCurrentItemHq = Marshal.PtrToStringUTF8((IntPtr)AddonPtr->AtkValues[1].String).Contains('\uE03C');
-        Callback.Fire(AddonPtr, true, 4);
         return true;
     }
 
@@ -238,7 +222,7 @@ internal static class RetainerHelper
 
     internal static unsafe bool ClickEntrustOrWithDrawlGil()
     {
-        Auctioneer.Status = "Clicking Entrust or Withdraw Gil";
+        Svc.Log.Debug("Clicking Entrust or Withdraw Gil");
         AtkUnitBase* AddonPtr;
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("SelectString", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
@@ -249,7 +233,7 @@ internal static class RetainerHelper
 
     internal static unsafe bool WithDrawGil(uint gilAmount)
     {
-        Auctioneer.Status = "Withdrawing Gil";
+        Svc.Log.Debug("Withdrawing Gil");
         AtkUnitBase* AddonPtr;
         if (!GenericHelpers.TryGetAddonByName<AtkUnitBase>("Bank", out AddonPtr) ||
             !GenericHelpers.IsAddonReady(AddonPtr))
