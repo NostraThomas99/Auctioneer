@@ -86,7 +86,9 @@ internal static class RetainerHelper
             !GenericHelpers.IsAddonReady(AddonPtr2))
             return false;
         Svc.Log.Debug("Opening retainer sell list");
-        Callback.Fire(AddonPtr2, true, 2);
+        var atkCount = AddonPtr2->AtkValuesCount;
+        bool isBuyback = atkCount != 33;
+        Callback.Fire(AddonPtr2, true, isBuyback ? 3 : 2);
         return true;
     }
 
