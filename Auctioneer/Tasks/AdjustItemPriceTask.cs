@@ -35,7 +35,7 @@ public class AdjustItemPriceTask
         EzThrottler.Throttle("Throttle", 1500);
         Svc.Log.Debug("Clicking compare price");
         CurrentPrice = AddonPtr->AtkValues[5].Int;
-        IsCurrentItemHq = Marshal.PtrToStringUTF8((IntPtr)AddonPtr->AtkValues[1].String).Contains('\uE03C');
+        IsCurrentItemHq = AddonPtr->AtkValues[1].String.ToString().Contains('\uE03C');
         Callback.Fire(AddonPtr, true, 4);
         return true;
     }

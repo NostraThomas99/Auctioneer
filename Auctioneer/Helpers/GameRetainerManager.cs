@@ -5,7 +5,7 @@ namespace Auctioneer.Helpers;
 
 internal static class GameRetainerManager
 {
-    public static unsafe bool Ready => RetainerManager.Instance()->Ready > (byte)0;
+    public static unsafe bool Ready => RetainerManager.Instance()->IsReady;
 
     public static unsafe Retainer[] Retainers
     {
