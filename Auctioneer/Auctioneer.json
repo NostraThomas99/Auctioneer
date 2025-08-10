@@ -4,7 +4,7 @@
 "InternalName": "Auctioneer",
 "Description": "Going once, going twice... SOLD",
 "ApplicableVersion": "any",
-"DalamudApiLevel": 12,
-"TestingDalamudApiLevel": 12,
+"DalamudApiLevel": 13,
+"TestingDalamudApiLevel": 13,
 "Punchline": "Speak of devil and he shall appear"
 }

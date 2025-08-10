@@ -12,7 +12,7 @@ using ECommons.Automation.LegacyTaskManager;
 using ECommons.Commands;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace Auctioneer;
 
@@ -24,6 +24,7 @@ public class Auctioneer : IDalamudPlugin
     public AutoRetainerApi AutoRetainerApi;
     public WindowSystem WindowSystem;
     public ConfigWindow ConfigWindow;
+
     public Auctioneer(IDalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector);
@@ -55,6 +56,7 @@ public class Auctioneer : IDalamudPlugin
         {
             AutoRetainerApi.ProcessIPCTaskFromOverlay();
         }
+
         ImGuiEx.Tooltip("Adjust retainer listing prices");
     }
 
@@ -89,6 +91,7 @@ public class Auctioneer : IDalamudPlugin
         {
             return true;
         }
+
         return false;
     }
 
@@ -99,6 +102,7 @@ public class Auctioneer : IDalamudPlugin
             Marketbuddy_IPCSubscriber.Unlock(nameof(Auctioneer));
             return true;
         }
+
         return false;
     }
 
@@ -153,6 +157,7 @@ public class Auctioneer : IDalamudPlugin
             TaskManager.EnqueueImmediate(() => adjustTask.AdjustPrice());
             TaskManager.DelayNextImmediate(2000);
         }
+
         return true;
     }
 
